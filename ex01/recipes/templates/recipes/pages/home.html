@@ -4,14 +4,8 @@
 
 {% block content %}
     <div class="main-content main-content-list container">
-        {% include 'recipes/components/recipe-card.html' %}
-        {% include 'recipes/components/recipe-card.html' %}
-        {% include 'recipes/components/recipe-card.html' %}
-        {% include 'recipes/components/recipe-card.html' %}
-        {% include 'recipes/components/recipe-card.html' %}
-        {% include 'recipes/components/recipe-card.html' %}
-        {% include 'recipes/components/recipe-card.html' %}
-        {% include 'recipes/components/recipe-card.html' %}
-        {% include 'recipes/components/recipe-card.html' %}
+        {% for recipe in recipes %}
+            {% include 'recipes/components/recipe-card.html' %}
+        {% endfor %}
     </div>
 {% endblock content %}
