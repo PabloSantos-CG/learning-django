@@ -4,25 +4,19 @@
 
 <body>
     {% include 'recipes/components/header.html' %}
-    <div class="search-container">
-        <div class="container">
-            <form action="" class="search-form">
-                <input type="search" class="search-input" name="search">
-                <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
-            </form>
-        </div>
-    </div>
+    {% include 'recipes/components/search.html' %}
+    
     <main class="main-content-container">
         <div class="main-content main-content-list container">
-            {% include 'recipes/components/recipe.html' %}
-            {% include 'recipes/components/recipe.html' %}
-            {% include 'recipes/components/recipe.html' %}
-            {% include 'recipes/components/recipe.html' %}
-            {% include 'recipes/components/recipe.html' %}
-            {% include 'recipes/components/recipe.html' %}
-            {% include 'recipes/components/recipe.html' %}
-            {% include 'recipes/components/recipe.html' %}
-            {% include 'recipes/components/recipe.html' %}
+            {% include 'recipes/components/recipe-card.html' %}
+            {% include 'recipes/components/recipe-card.html' %}
+            {% include 'recipes/components/recipe-card.html' %}
+            {% include 'recipes/components/recipe-card.html' %}
+            {% include 'recipes/components/recipe-card.html' %}
+            {% include 'recipes/components/recipe-card.html' %}
+            {% include 'recipes/components/recipe-card.html' %}
+            {% include 'recipes/components/recipe-card.html' %}
+            {% include 'recipes/components/recipe-card.html' %}
         </div>
     </main>
     {% include 'recipes/components/footer.html' %}
