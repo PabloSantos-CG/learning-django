@@ -1,25 +1,17 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-{% include "recipes/components/head.html" %}
+{% extends "global/base.html" %}
 
-<body>
-    {% include 'recipes/components/header.html' %}
-    {% include 'recipes/components/search.html' %}
-    
-    <main class="main-content-container">
-        <div class="main-content main-content-list container">
-            {% include 'recipes/components/recipe-card.html' %}
-            {% include 'recipes/components/recipe-card.html' %}
-            {% include 'recipes/components/recipe-card.html' %}
-            {% include 'recipes/components/recipe-card.html' %}
-            {% include 'recipes/components/recipe-card.html' %}
-            {% include 'recipes/components/recipe-card.html' %}
-            {% include 'recipes/components/recipe-card.html' %}
-            {% include 'recipes/components/recipe-card.html' %}
-            {% include 'recipes/components/recipe-card.html' %}
-        </div>
-    </main>
-    {% include 'recipes/components/footer.html' %}
-</body>
+{% block title %}Home{% endblock title %}
 
-</html>
+{% block content %}
+    <div class="main-content main-content-list container">
+        {% include 'recipes/components/recipe-card.html' %}
+        {% include 'recipes/components/recipe-card.html' %}
+        {% include 'recipes/components/recipe-card.html' %}
+        {% include 'recipes/components/recipe-card.html' %}
+        {% include 'recipes/components/recipe-card.html' %}
+        {% include 'recipes/components/recipe-card.html' %}
+        {% include 'recipes/components/recipe-card.html' %}
+        {% include 'recipes/components/recipe-card.html' %}
+        {% include 'recipes/components/recipe-card.html' %}
+    </div>
+{% endblock content %}
