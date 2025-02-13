@@ -4,6 +4,9 @@ from django.db import models
 class Category(models.Model):
     name = models.CharField(max_length=65)
 
+    def __str__(self):
+        return self.name
+
 
 class Recipe(models.Model):
     title = models.CharField(max_length=65)
@@ -26,14 +29,7 @@ class Recipe(models.Model):
         User, on_delete=models.SET_NULL, null=True
     )
 
-# EDITED
-# title description slug
-# preparation_time preparation_time_unit
-# servings servings_unit
-# preparation_step
-# preparation_step_is_html
-# created_at updated_at
-# is_published
-# cover
-# category (Relação)
-# Author (Relação)
+    def __str__(self):
+        return self.title
+    
+
