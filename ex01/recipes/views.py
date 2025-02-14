@@ -24,16 +24,19 @@ def home(request):
 
 
 def recipe(request, id):
-    data_recipe = Recipe.objects.get(id=id)
+    try:
+        data_recipe = Recipe.objects.get(id=id)
 
-    return render(
-        request,
-        'recipes/pages/recipe.html',
-        context={
-            'recipe': data_recipe,
-            'is_page_details': True
-        }
-    )
+        return render(
+            request,
+            'recipes/pages/recipe.html',
+            context={
+                'recipe': data_recipe,
+                'is_page_details': True
+            }
+        )
+    except:
+        return render(request, 'recipes/pages/error.html', status=404)
 
 
 def category(request, id):
@@ -41,9 +44,12 @@ def category(request, id):
         category__id=id
     ).order_by("-id")
 
+    if not recipes:
+        return render(request, 'recipes/pages/error.html', status=404)
+
     return render(
         request,
-        'recipes/pages/home.html',
+        'recipes/pages/category.html',
         context={
             'recipes': recipes
         }
