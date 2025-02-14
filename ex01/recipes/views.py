@@ -2,6 +2,7 @@ from django.shortcuts import render
 from recipes.models import Recipe
 # from utils.recipes.factory import make_recipe
 
+
 def home(request):
     recipes = Recipe.objects.all().order_by("-id")
 
@@ -20,6 +21,7 @@ def home(request):
     #         'recipes': [make_recipe() for _ in range(9)]
     #     }
     # )
+
 
 def recipe(request, id):
     data_recipe = Recipe.objects.get(id=id)
