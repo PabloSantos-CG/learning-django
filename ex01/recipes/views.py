@@ -32,7 +32,8 @@ def recipe(request, id):
             'recipes/pages/recipe.html',
             context={
                 'recipe': data_recipe,
-                'is_page_details': True
+                'is_page_details': True,
+                'title': data_recipe.title
             }
         )
     except:
@@ -47,10 +48,17 @@ def category(request, id):
     if not recipes:
         return render(request, 'recipes/pages/error.html', status=404)
 
+    first_recipe = recipes.first()
+    if first_recipe and first_recipe.category:
+        category_name = first_recipe.category.name 
+    else:
+        "Categoria não encontrada"
+
     return render(
         request,
         'recipes/pages/category.html',
         context={
-            'recipes': recipes
+            'recipes': recipes,
+            'title': category_name
         }
     )
