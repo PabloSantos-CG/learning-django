@@ -32,6 +32,15 @@ class RecipeViewsTest(RecipeTestBase):
         self.assertIn('5 Porções', content)
         self.assertEqual(len(response_context_recipes), 1)
 
+    def test_does_not_upload_unpublished_recipes(self):
+        recipe = self.make_recipe(is_published=False)
+
+        response = self.client.get(
+            reverse('recipes:details', kwargs={'id': recipe.pk})
+        )
+
+        self.assertEqual(response.status_code, 404)
+
     def test_recipe_details_404(self):
         recipe_details = reverse('recipes:details', kwargs={'id': 9999})
         response = self.client.get(recipe_details)

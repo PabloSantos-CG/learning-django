@@ -32,19 +32,6 @@ def recipe(request, id):
 
 
 def category(request, id):
-    # recipes = Recipe.objects.filter(
-    #     category__id=id
-    # ).order_by("-id")
-
-    # if not recipes:
-    #     return render(request, 'recipes/pages/error.html', status=404)
-
-    # first_recipe = recipes.first()
-    # if first_recipe and first_recipe.category:
-    #     category_name = first_recipe.category.name
-    # else:
-    #     "Categoria não encontrada"
-
     recipes = get_list_or_404(
         Recipe.objects.filter(
             category__id=id
