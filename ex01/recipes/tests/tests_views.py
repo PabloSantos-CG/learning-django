@@ -50,3 +50,16 @@ class RecipeViewsTest(RecipeTestBase):
         category = reverse('recipes:category', kwargs={'id': 9999})
         response = self.client.get(category)
         self.assertEqual(response.status_code, 404)
+
+    def test_recipes_view_search(self):
+        response = resolve(reverse('recipes:search'))
+        self.assertIs(response.func, views.search)
+
+    def test_recipes_template_search(self):
+        url = reverse('recipes:search') + '?q=test'
+        response = self.client.get(url)
+        self.assertTemplateUsed(response, 'recipes/pages/search.html')
+
+    def test_recipes_search_404_querystr_no_param(self):
+        response = self.client.get(reverse('recipes:search'))
+        self.assertEqual(response.status_code, 404)
