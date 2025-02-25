@@ -55,9 +55,16 @@ def category(request: HttpRequest, id):
 
 
 def search(request: HttpRequest):
-    query_str = request.GET.get('q')
+    query_str = request.GET.get('q', '').strip()
 
-    if query_str is None:
+    if not query_str:
         raise Http404()
 
-    return render(request, 'recipes/pages/search.html')
+    return render(
+        request,
+        'recipes/pages/search.html',
+        context={
+            'title': f'Search for "{query_str}"',
+            'content': query_str
+        }
+    )
