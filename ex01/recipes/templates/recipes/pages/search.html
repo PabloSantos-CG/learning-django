@@ -3,7 +3,11 @@
 {% block title %}{{ title }}{% endblock title %}
     
 {% block content %}
-    <div class="main-content main-content-list container">
-        <h2>{{ content }}</h2>
-    </div>
+<div class="main-content main-content-list container">
+    {% for recipe in recipes %}
+        {% include 'recipes/components/recipe-card.html' %}
+    {% empty %}
+        <h1>Sorry, no recipes yet 🥲<h1/>
+    {% endfor %}
+</div>
 {% endblock content %}

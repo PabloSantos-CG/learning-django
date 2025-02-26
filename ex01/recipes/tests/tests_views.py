@@ -1,6 +1,7 @@
 from django.urls import resolve, reverse
 from recipes import views
 from .test_recipe_base import RecipeTestBase
+from recipes.models import Recipe
 
 
 class RecipeViewsTest(RecipeTestBase):
@@ -56,10 +57,18 @@ class RecipeViewsTest(RecipeTestBase):
         self.assertIs(response.func, views.search)
 
     def test_recipes_template_search(self):
-        url = reverse('recipes:search') + '?q=test'
-        response = self.client.get(url)
+        url = reverse('recipes:search')
+        response = self.client.get(f'{url}?q=test')
         self.assertTemplateUsed(response, 'recipes/pages/search.html')
 
     def test_recipes_search_404_querystr_no_param(self):
         response = self.client.get(reverse('recipes:search'))
         self.assertEqual(response.status_code, 404)
+
+    def test_recipes_search_find_correct(self):
+        mock_recipe = self.make_recipe()
+
+        url = reverse('recipes:search')
+        response = self.client.get(f'{url}?q=Recipe')
+
+        self.assertIn(mock_recipe, response.context['recipes'])
