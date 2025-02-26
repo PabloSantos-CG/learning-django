@@ -1,8 +1,9 @@
 from django.http import HttpRequest
 from django.http.response import Http404
 from django.shortcuts import render, get_list_or_404, get_object_or_404
-from .models import Recipe
 from django.db.models import Q
+from django.core.paginator import Paginator
+from .models import Recipe
 
 
 def home(request: HttpRequest):
@@ -10,11 +11,15 @@ def home(request: HttpRequest):
         is_published=True
     ).order_by("-id")
 
+    query_str = request.GET.get('page', '1')
+    paginator = Paginator(recipes, 6)
+    paginator_obj = paginator.get_page(query_str)
+
     return render(
         request,
         'recipes/pages/home.html',
         context={
-            'recipes': recipes
+            'recipes': paginator_obj
         }
     )
 
