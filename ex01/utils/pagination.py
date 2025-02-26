@@ -1,7 +1,7 @@
 import math
 
 
-def make_pagination_range(page_range: list[int], qtd_pages: int, current_page: int):
+def make_pagination_range(page_range, qtd_pages, current_page):
     middle_range = math.ceil(qtd_pages / 2)
     start_range = current_page - middle_range
     stop_range = current_page + middle_range
