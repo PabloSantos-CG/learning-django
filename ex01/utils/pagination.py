@@ -1,14 +1,29 @@
-def make_pagination_range(list_range: list[int], pages: int, current_page: int):
-    """
-    deve receber uma lista e
-    retornar essa lista contendo:
-    dois elementos para a esquerda do índice atual e
-    dois elementos para a direita do índice atual
-    """
+import math
 
-    middle_index = pages / 2
-    start_index = ...
-    stop_index = ...
-    # list_ = list_range[]
 
-    return [1, 2, 3, 4]
+def make_pagination_range(page_range: list[int], qtd_pages: int, current_page: int):
+    middle_range = math.ceil(qtd_pages / 2)
+    start_range = current_page - middle_range
+    stop_range = current_page + middle_range
+    total_pages = len(page_range)
+
+    start_range_offset = abs(start_range) if start_range < 0 else 0
+
+    if start_range < 0:
+        start_range = 0
+        stop_range += start_range_offset
+
+    if stop_range > total_pages:
+        start_range = start_range - abs(total_pages - stop_range)
+
+    return {
+        'pagination': page_range[start_range:stop_range],
+        'page_range': page_range,
+        'qtd_pages': qtd_pages,
+        'current_page': current_page,
+        'total_pages': total_pages,
+        'start_range': start_range,
+        'stop_range': stop_range,
+        'first_page_out_of_range': current_page > middle_range,
+        'last_page_out_of_range': stop_range < total_pages,
+    }
