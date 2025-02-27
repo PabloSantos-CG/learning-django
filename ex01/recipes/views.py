@@ -5,6 +5,7 @@ from django.db.models import Q
 from .models import Recipe
 from utils.pagination import make_pagination
 
+
 def home(request: HttpRequest):
     recipes = Recipe.objects.filter(
         is_published=True
@@ -47,11 +48,14 @@ def category(request: HttpRequest, id):
     if recipes[0].category is not None:
         category_title = recipes[0].category.name
 
+    paginator_obj, pagination_range = make_pagination(request, recipes)
+
     return render(
         request,
         'recipes/pages/category.html',
         context={
-            'recipes': recipes,
+            'recipes': paginator_obj,
+            'pagination_range': pagination_range,
             'title': category_title
         }
     )
@@ -71,11 +75,15 @@ def search(request: HttpRequest):
         is_published=True
     ).order_by("-id")
 
+    paginator_obj, pagination_range = make_pagination(request, recipes)
+
     return render(
         request,
         'recipes/pages/search.html',
         context={
             'title': f'Search for "{query_str}"',
-            'recipes': recipes
+            'recipes': paginator_obj,
+            'pagination_range': pagination_range,
+            'additional_url_query': f'&q={query_str}'
         }
     )

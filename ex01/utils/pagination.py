@@ -1,7 +1,6 @@
 import math
+from typing import Sequence
 from django.core.paginator import Paginator
-from django.http import HttpRequest
-from django.db.models import QuerySet
 
 
 def make_pagination_range(page_range, qtd_pages, current_page):
@@ -32,9 +31,9 @@ def make_pagination_range(page_range, qtd_pages, current_page):
     }
 
 
-def make_pagination(req: HttpRequest, queryset: QuerySet, qtd_pages=4):
+def make_pagination(request, queryset, qtd_pages=4):
     try:
-        current_page = int(req.GET.get('page', 1))
+        current_page = int(request.GET.get('page', 1))
     except ValueError:
         current_page = 1
 
