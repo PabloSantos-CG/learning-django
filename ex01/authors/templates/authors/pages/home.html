@@ -1,1 +1,32 @@
-{{ forms }}
+{% extends "global/base.html" %}
+
+{% block title %}Register - Author{% endblock title %}
+
+{% block content %}
+    <div class="main-content main-content-list container">
+        <form action="" method="post">
+            {% csrf_token %}
+
+            <div class="form-content form-content-grid">
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                        </label>
+                        {{ field }}
+                    </div>
+
+                    {% if field.help_text %}
+                        <p class="help-text">{{ field.help_text }}</p>
+                    {% endif %}
+
+                    {{ field.errors }}
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <button type="submit">Send ✅</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
