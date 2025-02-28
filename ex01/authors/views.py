@@ -1,6 +1,9 @@
 from django.http import HttpRequest
 from django.shortcuts import render
+from .forms import RegisterForm
 
-# Create your views here.
+
 def register(request: HttpRequest):
-    return render(request, 'authors/pages/home.html')
+    form = RegisterForm()
+
+    return render(request, 'authors/pages/home.html', {'form': form})
