@@ -4,9 +4,9 @@ from .forms import RegisterForm
 
 
 def register(request: HttpRequest):
-    form = RegisterForm()
+    form = RegisterForm(request.session.get('register_form_data'))
 
-    return render(request, 'authors/pages/home.html', {'form': form})
+    return render(request, 'authors/pages/register.html', {'form': form})
 
 def create(request: HttpRequest):
     if not request.POST:

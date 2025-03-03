@@ -14,15 +14,24 @@
                             {{ field.label }}
                         </label>
                         {{ field }}
+
+                        {% if field.help_text %}
+                            <p class="help-text">{{ field.help_text }}</p>
+                        {% endif %}
+
+                        {{ field.errors }}
                     </div>
-
-                    {% if field.help_text %}
-                        <p class="help-text">{{ field.help_text }}</p>
-                    {% endif %}
-
-                    {{ field.errors }}
                 {% endfor %}
             </div>
+
+            {% if form.errors %}
+                <div class="form-content form-content-grid">
+                    <p class="form-group message message-error">
+                        Desculpe, houve erro ao preencher o formulário.
+                        Você deve corrigi-los para concluir o envio.
+                    </p>
+                </div>
+            {% endif %}
 
             <div class="form-content form-content-grid">
                 <div class="form-group">
