@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+import re
 
 
 class ConfigInputs:
@@ -54,6 +55,24 @@ class ConfigInputs:
     def add_placeholder(field, new_value):
         ConfigInputs.add_attr(field, 'placeholder', new_value)
 
+    @staticmethod
+    def validate_password(password):
+        regex = re.compile(
+            r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$*&@#])[A-Za-z\d$*&@#]{8,}$'
+        )
+
+        if not regex.match(password):
+            raise ValidationError((
+                'Mínimo de 8 caracteres: A senha deve ter pelo menos 8 caracteres.'
+                'Pelo menos uma letra minúscula: Deve conter ao menos uma letra de "a" a "z".'
+                'Pelo menos uma letra maiúscula: Deve conter ao menos uma letra de "A" a "Z".'
+                'Pelo menos um dígito: Deve conter ao menos um número de "0" a "9".'
+                'Pelo menos um caractere especial: Deve incluir ao menos um dos seguintes caracteres especiais:'
+                '"$", "*", "&", "@", "#"'
+            ),
+                code='invalid',
+            )
+
 
 class RegisterForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -61,13 +80,31 @@ class RegisterForm(forms.ModelForm):
 
         # dessa maneira não estou sobrescrevendo o widgets
         # self.fields['username'].widget.attrs['placeholder'] = 'novo valor'
-        ConfigInputs.add_placeholder(self.fields['username'], 'Your username')
-        ConfigInputs.add_placeholder(self.fields['email'], 'Your e-mail')
+        ConfigInputs.add_placeholder(self.fields['username'], 'Seu username')
+        ConfigInputs.add_placeholder(self.fields['email'], 'Seu e-mail')
         ConfigInputs.add_placeholder(self.fields['first_name'], 'Ex.: John')
         ConfigInputs.add_placeholder(self.fields['last_name'], 'Ex.: Doe')
+        ConfigInputs.add_placeholder(self.fields['password'], 'Informe sua senha')
+        ConfigInputs.add_placeholder(self.fields['password2'], 'Repita sua senha')
 
     # ao fazer dessa maneira, estamos criando o campo ou sobrescrevendo se ele já existir
-    password2 = forms.CharField(min_length=4, required=False)
+    password = forms.CharField( 
+        required=True,
+        error_messages={
+            'required': 'A senha não deve estar vazia'
+        },
+        help_text=(
+            'A senha deve ter pelo menos uma letra maiúscula, '
+            'uma letra minúscula e um número.'
+            'O comprimento deve ser de pelo menos 8 caracteres.'
+        ),
+        widget= forms.PasswordInput(),
+        validators=[ConfigInputs.validate_password]
+    )
+    password2 = forms.CharField(
+        required=True,
+        widget= forms.PasswordInput(),
+    )
 
     class Meta:
         model = User
@@ -82,14 +119,14 @@ class RegisterForm(forms.ModelForm):
         # help_texts = {
         #     'username': 'O nome de usuário deveria ser válido',
         # }
-        error_messages = {
-            'username': {
-                'required': 'Campo obrigatório.',
-            },
-            'password': {
-                'max_length': 'Tamanho insuficiente.',
-            }
-        }
+        # error_messages = {
+        #     'username': {
+        #         'required': 'Campo obrigatório.',
+        #     },
+        #     'password': {
+        #         'max_length': 'Tamanho insuficiente.',
+        #     }
+        # }
 
         # widgets = {
         #     'username': forms.TextInput(attrs={
@@ -99,18 +136,18 @@ class RegisterForm(forms.ModelForm):
         #         'placeholder': 'Informe sua senha aqui'
         #     })
         # }
-    def clean_username(self):
-        data = self.cleaned_data.get('username')
+    # def clean_username(self):
+    #     data = self.cleaned_data.get('username')
 
-        if data is not None and 'fulano' in data:
-            raise ValidationError(
-                'Não digite %(value)s no campo first name',
-                code='invalid',
-                 params={'value': 'fulano'}
-            )
-        
-        return data
-    
+    #     if data is not None and 'fulano' in data:
+    #         raise ValidationError(
+    #             'Não digite %(value)s no campo first name',
+    #             code='invalid',
+    #             params={'value': 'fulano'}
+    #         )
+
+    #     return data
+
     def clean(self):
         cleaned_data = super().clean()
 
