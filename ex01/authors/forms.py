@@ -84,69 +84,43 @@ class RegisterForm(forms.ModelForm):
         ConfigInputs.add_placeholder(self.fields['email'], 'Seu e-mail')
         ConfigInputs.add_placeholder(self.fields['first_name'], 'Ex.: John')
         ConfigInputs.add_placeholder(self.fields['last_name'], 'Ex.: Doe')
-        ConfigInputs.add_placeholder(self.fields['password'], 'Informe sua senha')
-        ConfigInputs.add_placeholder(self.fields['password2'], 'Repita sua senha')
+        ConfigInputs.add_placeholder(
+            self.fields['password'], 'Informe sua senha'
+        )
+        ConfigInputs.add_placeholder(
+            self.fields['password2'], 'Repita sua senha'
+        )
 
     # ao fazer dessa maneira, estamos criando o campo ou sobrescrevendo se ele já existir
-    password = forms.CharField( 
+    password = forms.CharField(
         required=True,
         error_messages={
-            'required': 'A senha não deve estar vazia'
+            'required': 'O campo de senha não deve ficar vazio.'
         },
         help_text=(
             'A senha deve ter pelo menos uma letra maiúscula, '
             'uma letra minúscula e um número.'
             'O comprimento deve ser de pelo menos 8 caracteres.'
         ),
-        widget= forms.PasswordInput(),
-        validators=[ConfigInputs.validate_password]
+        label='Senha:',
+        widget=forms.PasswordInput(),
+        validators=[ConfigInputs.validate_password],
     )
     password2 = forms.CharField(
         required=True,
-        widget= forms.PasswordInput(),
+        widget=forms.PasswordInput(),
+        label='Repita a senha:',
     )
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'password']
+        fields = ['first_name', 'last_name', 'username', 'email']
         labels = {
-            'first_name': 'First name:',
+            'first_name': 'Primeiro nome:',
             'last_name': 'Último sobrenome:',
             'username': 'Nome de Usuário:',
             'email': 'E-mail:',
-            'password': 'Senha:',
         }
-        # help_texts = {
-        #     'username': 'O nome de usuário deveria ser válido',
-        # }
-        # error_messages = {
-        #     'username': {
-        #         'required': 'Campo obrigatório.',
-        #     },
-        #     'password': {
-        #         'max_length': 'Tamanho insuficiente.',
-        #     }
-        # }
-
-        # widgets = {
-        #     'username': forms.TextInput(attrs={
-        #         'placeholder': 'Informe o nome do usuário'
-        #     }),
-        #     'password': forms.PasswordInput(attrs={
-        #         'placeholder': 'Informe sua senha aqui'
-        #     })
-        # }
-    # def clean_username(self):
-    #     data = self.cleaned_data.get('username')
-
-    #     if data is not None and 'fulano' in data:
-    #         raise ValidationError(
-    #             'Não digite %(value)s no campo first name',
-    #             code='invalid',
-    #             params={'value': 'fulano'}
-    #         )
-
-    #     return data
 
     def clean(self):
         cleaned_data = super().clean()
