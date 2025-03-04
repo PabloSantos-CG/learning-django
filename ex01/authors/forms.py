@@ -93,10 +93,6 @@ class RegisterForm(forms.ModelForm):
 
     # ao fazer dessa maneira, estamos criando o campo ou sobrescrevendo se ele já existir
     password = forms.CharField(
-        required=True,
-        error_messages={
-            'required': 'O campo de senha não deve ficar vazio.'
-        },
         help_text=(
             'A senha deve ter pelo menos uma letra maiúscula, '
             'uma letra minúscula e um número.'
@@ -107,7 +103,6 @@ class RegisterForm(forms.ModelForm):
         validators=[ConfigInputs.validate_password],
     )
     password2 = forms.CharField(
-        required=True,
         widget=forms.PasswordInput(),
         label='Repita a senha:',
     )
@@ -121,6 +116,12 @@ class RegisterForm(forms.ModelForm):
             'username': 'Nome de Usuário:',
             'email': 'E-mail:',
         }
+        widgets = {
+            "first_name": forms.TextInput(attrs={"required": True}),
+            "last_name": forms.TextInput(attrs={"required": True}),
+            "username": forms.TextInput(attrs={"required": True}),
+            "email": forms.EmailInput(attrs={"required": True}),
+        }
 
     def clean(self):
         cleaned_data = super().clean()
@@ -132,6 +133,15 @@ class RegisterForm(forms.ModelForm):
             raise ValidationError({
                 'password': 'Os campos devem ser iguais',
                 'password2': 'Os campos devem ser iguais',
+            })
+        
+        first_name = cleaned_data.get('first_name', '').strip()
+        last_name = cleaned_data.get('last_name', '').strip()
+
+        if first_name == '' or last_name == '':
+            raise ValidationError({
+                'first_name': 'Este campo é obrigatório.',
+                'last_name': 'Este campo é obrigatório.',
             })
 
         return super().clean()
