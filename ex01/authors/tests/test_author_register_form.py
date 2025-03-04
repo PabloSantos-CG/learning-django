@@ -22,7 +22,7 @@ class AuthorRegisterFromTestCase(TestCase):
 
     def test_error_messages_password(self):
         form = RegisterForm()
-        message = 'O campo de senha não deve ficar vazio.'
+        message = 'Este campo é obrigatório.'
         error_messages = form['password'].field.error_messages['required']
 
         self.assertEqual(error_messages, message)
