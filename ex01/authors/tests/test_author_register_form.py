@@ -60,8 +60,8 @@ class AuthorRegisterFromIntegrationTest(DjangoTestCase):
             'last_name': 'Doe',
             'username': 'john_doe',
             'email': 'john_doe@email.com',
-            'password': 'John.@doe1234',
-            'password2': 'John.@doe1234',
+            'password': '@Bc123456',
+            'password2': '@Bc123456',
         }
         return super().setUp()
 
@@ -82,6 +82,6 @@ class AuthorRegisterFromIntegrationTest(DjangoTestCase):
 
         response = self.client.post(url, self.form_data, follow=True)
         msg = 'Já existe usuário cadastrado com este e-mail.'
-        
+
         self.assertIn(msg, response.context['form'].errors.get('email'))
         self.assertIn(msg, response.content.decode('utf-8'))
