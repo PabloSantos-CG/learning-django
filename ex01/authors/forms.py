@@ -57,9 +57,7 @@ class ConfigInputs:
 
     @staticmethod
     def validate_password(password):
-        regex = re.compile(
-            r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$*&@#])[A-Za-z\d$*&@#]{8,}$'
-        )
+        regex = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$')
 
         if not regex.match(password):
             raise ValidationError((
@@ -123,6 +121,17 @@ class RegisterForm(forms.ModelForm):
             "email": forms.EmailInput(attrs={"required": True}),
         }
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '')
+        user_exists = User.objects.filter(email=email).exists()
+
+        if user_exists:
+            raise ValidationError(
+                'Já existe usuário cadastrado com este e-mail.',
+                code='invalid'
+            )
+        return email
+
     def clean(self):
         cleaned_data = super().clean()
 
@@ -134,7 +143,7 @@ class RegisterForm(forms.ModelForm):
                 'password': 'Os campos devem ser iguais',
                 'password2': 'Os campos devem ser iguais',
             })
-        
+
         first_name = cleaned_data.get('first_name', '').strip()
         last_name = cleaned_data.get('last_name', '').strip()
 
@@ -144,4 +153,4 @@ class RegisterForm(forms.ModelForm):
                 'last_name': 'Este campo é obrigatório.',
             })
 
-        return super().clean()
+        return cleaned_data

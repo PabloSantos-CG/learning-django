@@ -9,6 +9,7 @@ def register(request: HttpRequest):
 
     return render(request, 'authors/pages/register.html', {'form': form})
 
+
 def create(request: HttpRequest):
     if not request.POST:
         raise Http404()
@@ -18,8 +19,12 @@ def create(request: HttpRequest):
     form = RegisterForm(POST)
 
     if form.is_valid():
-        form.save()
+        user = form.save(commit=False)
+        user.set_password(user.password)
+        user.save()
+
         messages.success(request, 'Usuário criado com sucesso. Faça o Login.')
+
         del request.session['register_form_data']
-    
+
     return redirect('authors:register')
