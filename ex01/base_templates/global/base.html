@@ -2,19 +2,19 @@
 <html lang="pt-br">
 
 <head>
-    {% include "recipes/components/metadata.html" %}
+    {% include "global/components/metadata.html" %}
     <title>{% block title %}{% endblock title %} | Recipes</title>
 </head>
 
 <body>
-    {% include 'recipes/components/header.html' %}
+    {% include 'global/components/header.html' %}
     {% include 'recipes/components/search.html' %}
     
     <main class="main-content container">
         {% block content %}{% endblock content %}
         {% include "recipes/components/pagination.html" %}
     </main>
-    {% include 'recipes/components/footer.html' %}
+    {% include 'global/components/footer.html' %}
 </body>
 
 </html>
