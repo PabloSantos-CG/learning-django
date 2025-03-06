@@ -1,0 +1,16 @@
+{% extends "global/base.html" %}
+
+{% block title %}Log In - Author{% endblock title %}
+
+{% block content %}
+    <div class="main-content center container">
+        {% include "global/components/messages.html" %}
+        {% if request.user.is_authenticated %}
+            <p class='text-center'>
+                Você está logado como: 
+                {{ request.user.username }}.
+            </p>
+        {% endif %}
+        {% include "global/components/form.html" %}
+    </div>
+{% endblock content %}

@@ -2,7 +2,7 @@ from unittest import TestCase
 from django.test import TestCase as DjangoTestCase
 from django.urls import reverse
 from parameterized import parameterized
-from authors.forms import RegisterForm
+from authors.forms.register_form import RegisterForm
 
 
 class AuthorRegisterFromTestCase(TestCase):
@@ -70,13 +70,13 @@ class AuthorRegisterFromIntegrationTest(DjangoTestCase):
     ])
     def test_fields_cannot_be_empty(self, field, msg):
         self.form_data[field] = ''
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         response = self.client.post(url, self.form_data, follow=True)
 
         self.assertIn(msg, response.content.decode('utf-8'))
 
     def test_email_already_exist(self):
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
 
         self.client.post(url, self.form_data, follow=True)
 
