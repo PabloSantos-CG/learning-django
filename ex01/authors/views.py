@@ -1,8 +1,10 @@
-from django.http import Http404, HttpRequest
+from django.http import Http404, HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
 from .forms import LoginForm, RegisterForm
 
 
@@ -37,7 +39,7 @@ def register_create(request: HttpRequest):
 
         del request.session['register_form_data']
 
-    return redirect('authors:register_view')
+    return redirect('authors:login')
 
 
 def login_view(request: HttpRequest):
@@ -74,3 +76,11 @@ def login_auth(request: HttpRequest):
     login(request, authenticate_user)
     messages.success(request, 'Login feito com sucesso!')
     return redirect('authors:login')
+
+@login_required(login_url='authors:login')
+def logout_view(request: HttpRequest):
+    if not request.POST:
+        raise Http404()
+    
+    logout(request)
+    return redirect(reverse('authors:login'))

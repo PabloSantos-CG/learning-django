@@ -339,6 +339,21 @@ h6 {
   text-align: center;
 }
 
+.logout-form {
+  display: inline-block;
+}
+.logout-form button {
+  display: inline;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--color-primary);
+  font-size: 1.6rem;
+}
+.logout-form button:hover {
+  color: var(--color-primary-hover);
+}
+
 @media (max-width: 600px) {
   .main-content-list,
   .form-content-grid {

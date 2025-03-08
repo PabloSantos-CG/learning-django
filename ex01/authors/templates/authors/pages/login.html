@@ -5,12 +5,16 @@
 {% block content %}
     <div class="main-content center container">
         {% include "global/components/messages.html" %}
-        {% if request.user.is_authenticated %}
-            <p class='text-center'>
-                Você está logado como: 
-                {{ request.user.username }}.
-            </p>
-        {% endif %}
         {% include "global/components/form.html" %}
+        {% if request.user.is_authenticated %}
+            <div>
+                Você está logado como <u>{{ request.user.username }}.</u> 
+                Saia da conta clicando 
+                <form action="{% url "authors:logout" %}" method="post" class='logout-form'>
+                    {% csrf_token %}
+                    <button type="submit">aqui.</button>
+                </form>
+            </div>
+        {% endif %}
     </div>
 {% endblock content %}
